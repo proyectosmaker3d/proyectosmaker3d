@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OMEGA 3D · Impresiones personalizadas</title>
+  <style>
+    /* ----- RESET Y BASE ----- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0b0d10;
+      font-family: 'Inter', 'Segoe UI', 'Roboto', system-ui, -apple-system, sans-serif;
+      color: #e0e4e8;
+      line-height: 1.5;
+      padding: 2rem 1.5rem 4rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Fondo con textura sutil de rejilla tecnológica */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background-image: 
+        linear-gradient(rgba(0, 255, 255, 0.02) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 255, 255, 0.02) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Contenedor principal */
+    .main-wrapper {
+      max-width: 1300px;
+      width: 100%;
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      gap: 3rem;
+    }
+
+    /* ----- ENCABEZADO IMPACTANTE ----- */
+    .hero {
+      text-align: center;
+      padding: 2rem 1rem 1rem;
+      position: relative;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.8rem, 8vw, 5.2rem);
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      text-transform: uppercase;
+      background: linear-gradient(135deg, #ffffff 0%, #a0f0ff 45%, #00e0ff 70%, #7affb0 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 0 25px rgba(0, 220, 255, 0.5), 0 0 10px rgba(0, 255, 180, 0.3);
+      margin-bottom: 0.75rem;
+      line-height: 1.1;
+    }
+
+    .hero .subhead {
+      font-size: clamp(1rem, 3vw, 1.35rem);
+      font-weight: 400;
+      letter-spacing: 1px;
+      color: #b0c4d9;
+      max-width: 780px;
+      margin: 0 auto;
+      border-left: 3px solid #00e0ff;
+      border-right: 3px solid #7affb0;
+      padding: 0.5rem 1.8rem;
+      display: inline-block;
+      background: rgba(0, 20, 30, 0.4);
+      backdrop-filter: blur(3px);
+      border-radius: 40px;
+      box-shadow: 0 0 20px rgba(0, 255, 255, 0.1);
+    }
+
+    /* ----- CONTACTO ----- */
+    .contact-bar {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1.6rem;
+    }
+
+    .contact-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #101418;
+      border: 1px solid #1f2a33;
+      border-radius: 40px;
+      padding: 0.55rem 1.3rem;
+      font-size: 0.92rem;
+      color: #d0e4ff;
+      letter-spacing: 0.4px;
+      box-shadow: 0 0 0 1px rgba(0, 224, 255, 0.06), 0 0 18px rgba(0, 224, 255, 0.08);
+    }
+
+    .contact-item .icon {
+      color: #00e0ff;
+      font-size: 1rem;
+      text-shadow: 0 0 8px #00e0ff;
+    }
+
+    .contact-item strong {
+      color: #7affb0;
+      font-weight: 600;
+    }
+
+    /* ----- GALERÍA / GRID ----- */
+    .gallery-section {
+      display: flex;
+      flex-direction: column;
+      gap: 2.5rem;
+    }
+
+    /* Grid principal: 3 columnas en desktop, 2 en tablet, 1 en móvil */
+    .grid-3d {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem 1.8rem;
+      margin-top: 0.5rem;
+    }
+
+    /* Tarjeta de imagen + datos */
+    .card {
+      background: #101418;
+      border-radius: 24px;
+      overflow: hidden;
+      border: 1px solid #1f2a33;
+      box-shadow: 0 10px 25px -8px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(0, 255, 255, 0.05);
+      transition: transform 0.2s ease, box-shadow 0.3s ease, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      border-color: #2a9d8f;
+      box-shadow: 0 18px 30px -8px rgba(0, 200, 255, 0.25), 0 0 0 1px #00e0ff55;
+    }
+
+    /* Imagen */
+    .card-image {
+      width: 100%;
+      aspect-ratio: 4 / 3;
+      overflow: hidden;
+      background: #0c0f12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s ease, filter 0.3s;
+      filter: brightness(0.95) contrast(1.05);
+    }
+
+    .card:hover .card-image img {
+      transform: scale(1.03);
+      filter: brightness(1) contrast(1.1);
+    }
+
+    /* Tarjeta oscura de datos técnicos */
+    .tech-info {
+      background: #0e1217;
+      padding: 1rem 1.2rem 1.2rem;
+      border-top: 1px solid #1e2a35;
+      display: flex;
+      flex-direction: column;
+      gap: 0.4rem;
+      font-size: 0.9rem;
+      letter-spacing: 0.2px;
+    }
+
+    .tech-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      border-bottom: 1px dashed #25323e;
+      padding-bottom: 0.25rem;
+    }
+
+    .tech-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .tech-label {
+      color: #8faec9;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: 0.7rem;
+      letter-spacing: 0.5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .tech-label::before {
+      content: "▹";
+      color: #00e0ff;
+      font-size: 0.8rem;
+    }
+
+    .tech-value {
+      font-weight: 600;
+      color: #e5f0ff;
+      background: #1b242e;
+      padding: 0.2rem 0.7rem;
+      border-radius: 30px;
+      font-size: 0.8rem;
+      border: 1px solid #2a3b48;
+      box-shadow: inset 0 1px 2px rgba(0,0,0,0.6);
+      letter-spacing: 0.3px;
+    }
+
+    /* Acento neón inferior en hover */
+    .card::after {
+      content: "";
+      display: block;
+      height: 2px;
+      width: 0%;
+      background: linear-gradient(90deg, #00e0ff, #7affb0);
+      transition: width 0.3s ease;
+    }
+
+    .card:hover::after {
+      width: 100%;
+    }
+
+    /* ----- RESPONSIVE ----- */
+    @media (max-width: 900px) {
+      .grid-3d {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 1.8rem;
+      }
+
+      .hero .subhead {
+        font-size: 1rem;
+        padding: 0.5rem 1.2rem;
+      }
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 1.5rem 1rem 3rem;
+      }
+
+      .grid-3d {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .tech-value {
+        font-size: 0.75rem;
+        padding: 0.15rem 0.6rem;
+      }
+
+      .tech-label {
+        font-size: 0.65rem;
+      }
+
+      .tech-info {
+        padding: 0.9rem 1rem 1rem;
+      }
+
+      .contact-item {
+        font-size: 0.82rem;
+        padding: 0.45rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="main-wrapper">
+    <!-- ENCABEZADO IMPACTANTE -->
+    <header class="hero">
+      <h1>OMEGA 3D</h1>
+      <div class="subhead">Impresiones 3D a medida · piezas personalizadas · diseño único</div>
+
+      <!-- CONTACTO -->
+      <div class="contact-bar">
+        <div class="contact-item">
+          <span class="icon">📞</span>
+          <span><strong>639 520 318</strong></span>
+        </div>
+        <div class="contact-item">
+          <span class="icon">✉</span>
+          <span>arb.laboralsocial@proton.me</span>
+        </div>
+      </div>
+    </header>
+
+    <!-- GALERÍA (un solo apartado con todas las creaciones) -->
+    <main class="gallery-section">
+      <div class="grid-3d">
+        <!-- Tarjeta 1 -->
+        <article class="card">
+          <div class="card-image">
+            <img 
+              src="https://images.unsplash.com/photo-1617791160505-6f00504e3519?q=80&w=600&auto=format&fit=crop" 
+              alt="Figura estética 3D"
+              loading="lazy"
+            >
+          </div>
+          <div class="tech-info">
+            <div class="tech-row">
+              <span class="tech-label">Impresora</span>
+              <span class="tech-value">Formlabs Form 4</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Material</span>
+              <span class="tech-value">Resina Tough 2000</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Tiempo</span>
+              <span class="tech-value">5h 20m</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 2 -->
+        <article class="card">
+          <div class="card-image">
+            <img 
+              src="https://images.unsplash.com/photo-1633113089631-1f2e7e2c8f4a?q=80&w=600&auto=format&fit=crop" 
+              alt="Escultura geométrica impresa en 3D"
+              loading="lazy"
+            >
+          </div>
+          <div class="tech-info">
+            <div class="tech-row">
+              <span class="tech-label">Impresora</span>
+              <span class="tech-value">Prusa SL1S</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Material</span>
+              <span class="tech-value">Resina Cerámica</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Tiempo</span>
+              <span class="tech-value">7h 45m</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 3 -->
+        <article class="card">
+          <div class="card-image">
+            <img 
+              src="https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=600&auto=format&fit=crop" 
+              alt="Figura decorativa con detalle fino"
+              loading="lazy"
+            >
+          </div>
+          <div class="tech-info">
+            <div class="tech-row">
+              <span class="tech-label">Impresora</span>
+              <span class="tech-value">Anycubic Photon M3</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Material</span>
+              <span class="tech-value">Resina ABS-Like</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Tiempo</span>
+              <span class="tech-value">6h 10m</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 4 -->
+        <article class="card">
+          <div class="card-image">
+            <img 
+              src="https://images.unsplash.com/photo-1581091226033-d5c48150dbaa?q=80&w=600&auto=format&fit=crop" 
+              alt="Engranaje técnico impreso en 3D"
+              loading="lazy"
+            >
+          </div>
+          <div class="tech-info">
+            <div class="tech-row">
+              <span class="tech-label">Impresora</span>
+              <span class="tech-value">Bambu Lab X1C</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Material</span>
+              <span class="tech-value">PA-CF (Nylon)</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Tiempo</span>
+              <span class="tech-value">3h 15m</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 5 -->
+        <article class="card">
+          <div class="card-image">
+            <img 
+              src="https://images.unsplash.com/photo-1581092160607-ee22621dd758?q=80&w=600&auto=format&fit=crop" 
+              alt="Soporte técnico impreso en 3D"
+              loading="lazy"
+            >
+          </div>
+          <div class="tech-info">
+            <div class="tech-row">
+              <span class="tech-label">Impresora</span>
+              <span class="tech-value">Prusa MK4</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Material</span>
+              <span class="tech-value">PETG</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Tiempo</span>
+              <span class="tech-value">2h 50m</span>
+            </div>
+          </div>
+        </article>
+
+        <!-- Tarjeta 6 -->
+        <article class="card">
+          <div class="card-image">
+            <img 
+              src="https://images.unsplash.com/photo-1581092918056-0c4c3acd3789?q=80&w=600&auto=format&fit=crop" 
+              alt="Componente mecánico impreso en 3D"
+              loading="lazy"
+            >
+          </div>
+          <div class="tech-info">
+            <div class="tech-row">
+              <span class="tech-label">Impresora</span>
+              <span class="tech-value">Raise3D Pro3</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Material</span>
+              <span class="tech-value">TPU Flex 95A</span>
+            </div>
+            <div class="tech-row">
+              <span class="tech-label">Tiempo</span>
+              <span class="tech-value">4h 05m</span>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- Pie técnico -->
+    <div style="text-align: center; margin-top: 3.5rem; color: #3e5566; font-size: 0.75rem; letter-spacing: 2px; text-transform: uppercase; border-top: 1px solid #1e2a35; padding-top: 1.8rem;">
+      ⚡ OMEGA 3D · IMPRESIONES PERSONALIZADAS · VITRINA TÉCNICA ⚡
+    </div>
+  </div>
+</body>
+</html>
